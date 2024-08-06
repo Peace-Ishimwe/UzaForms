@@ -1,6 +1,6 @@
 import OTPModel from "./otp.model";
-import UserModel from "./user.model";
-import UserAndRoleModel from "./user.role.model";
+import UserModel from "./user/user.model";
+import UserAndRoleModel from "./user/user.role.model";
 
 export {
     OTPModel,

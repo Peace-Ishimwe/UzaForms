@@ -1,31 +1,30 @@
 import React, { FormEvent, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'react-toastify';
-import { useUpdateUserAndRole } from '@/hooks/useUserAndRole';
+import { useUpdateGroupAndRole } from '@/hooks/useGroupAndRole';
 
-interface UserRoleEditModalProps {
+interface GroupRoleEditModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  userRole: UserRoleData;
+  GroupRole: GroupRoleData;
 }
 
-interface UserRoleData {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  status?: string;
-  updatedAt?: string;
+interface GroupRoleData {
+    _id: string;
+    groupName: string;
+    roleName: string;
+    status?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
-const UserRoleEditModal: React.FC<UserRoleEditModalProps> = ({ isOpen, closeModal, userRole }) => {
-  const [userRoleData, setUserRoleData] = useState<UserRoleData>(userRole);
-  const updateUserRoleMutation = useUpdateUserAndRole()
+const GroupRoleEditModal: React.FC<GroupRoleEditModalProps> = ({ isOpen, closeModal, GroupRole }) => {
+  const [GroupRoleData, setGroupRoleData] = useState<GroupRoleData>(GroupRole);
+  const updateGroupRoleMutation = useUpdateGroupAndRole()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setUserRoleData((prev) => ({
+    setGroupRoleData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -34,7 +33,7 @@ const UserRoleEditModal: React.FC<UserRoleEditModalProps> = ({ isOpen, closeModa
   const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
-      const data = await updateUserRoleMutation.mutateAsync({ _id: userRoleData._id, formData: userRoleData })
+      const data = await updateGroupRoleMutation.mutateAsync({ _id: GroupRoleData._id, formData: GroupRoleData })
       closeModal()
       toast.success(data.message)
     } catch (error) {
@@ -48,45 +47,24 @@ const UserRoleEditModal: React.FC<UserRoleEditModalProps> = ({ isOpen, closeModa
     <Dialog open={isOpen} onOpenChange={closeModal}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit User/Role</DialogTitle>
+          <DialogTitle>Edit Group/Role</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">First Name</label>
+            <label className="block text-sm font-medium text-gray-700">Group Name</label>
             <input
-              name="firstName"
-              value={userRoleData.firstName}
+              name="groupName"
+              value={GroupRoleData.groupName}
               onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               disabled
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Last Name</label>
+            <label className="block text-sm font-medium text-gray-700">Role Name</label>
             <input
-              name="lastName"
-              value={userRoleData.lastName}
-              onChange={handleInputChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-              disabled
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              name="email"
-              value={userRoleData.email}
-              onChange={handleInputChange}
-              type="email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-              disabled
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Role</label>
-            <input
-              name="role"
-              value={userRoleData.role}
+              name="roleName"
+              value={GroupRoleData.roleName}
               onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               disabled
@@ -96,7 +74,7 @@ const UserRoleEditModal: React.FC<UserRoleEditModalProps> = ({ isOpen, closeModa
             <label className="block text-sm font-medium text-gray-700">Status</label>
             <select
               name="status"
-              value={userRoleData.status}
+              value={GroupRoleData.status}
               onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
             >
@@ -109,7 +87,7 @@ const UserRoleEditModal: React.FC<UserRoleEditModalProps> = ({ isOpen, closeModa
             className="mt-3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:text-sm"
           >
             {
-              updateUserRoleMutation.isPending ? (
+              updateGroupRoleMutation.isPending ? (
                 <p>Saving...</p>
               ) : (
                 <p>Save</p>
@@ -122,4 +100,4 @@ const UserRoleEditModal: React.FC<UserRoleEditModalProps> = ({ isOpen, closeModa
   );
 };
 
-export default UserRoleEditModal;
+export default GroupRoleEditModal;

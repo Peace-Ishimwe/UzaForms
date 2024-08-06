@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUserAndRole, getAllUserAndRole, updateUserAndRole } from '../controllers/user.role.controller';
+import { createUserAndRole, getAllUserAndRole, updateUserAndRole } from '../../controllers/user/user.role.controller';
 
 const userAndRoleRoutes = Router();
 

@@ -20,7 +20,7 @@ const UserAndRolesPage: React.FC = () => {
 
     useEffect(() => {
         if (data) {
-            setUsersAndRoles(data.data);
+            setUsersAndRoles(data);
             setUsers(userData);
             setRoles(roleData)
         }

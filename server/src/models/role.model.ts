@@ -17,7 +17,7 @@ const userSchema = new Schema<IUser>({
   status: {
     type: String,
     enum: ['ENABLED', 'DISABLED'],
-    default: 'DISABLED'
+    default: 'ENABLED'
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Icon } from "@iconify/react";
 import { usePathname } from "next/navigation";
 import ProfileDropdown from "./containers/ProfileDropdown";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface props {
     setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +14,7 @@ interface props {
 
 const DashboardNavbar: React.FC<props> = ({ setIsSheetOpen, setIsSidebarOpen, isSidebarOpen }) => {
     const pathname = usePathname();
+    const { user } = useAuthStore()
 
     return (
         <main className="h-[64px] transition-all duration-300 top-0 sticky border-b bg-white flex flex-row-reverse sm:flex-row items-center justify-between  px-[1rem] w-full z-50">

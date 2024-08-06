@@ -1,12 +1,12 @@
 import passport from 'passport';
-import UserModel from '../models/user.model';
+import UserModel from '../models/user/user.model';
 import { randomBytes } from 'crypto';
 import hashPassword from '../utils/hash.password';
 import jwt from 'jsonwebtoken';
 import { Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
 import { Strategy as OAuth2Strategy } from 'passport-google-oauth2';
 import RoleModel from '../models/role.model';
-import UserAndRoleModel from '../models/user.role.model';
+import UserAndRoleModel from '../models/user/user.role.model';
 
 interface JwtPayload {
     userId: string;
@@ -50,53 +50,55 @@ passport.use(
         callbackURL: '/v1/api/google/callback',
         scope: ['email', 'profile'],
     },
-    async (accessToken: string, refreshToken: string, profile: any, done: any) => {
-        try {
-            let user = await UserModel.findOne({ email: profile.email });
+        async (accessToken: string, refreshToken: string, profile: any, done: any) => {
+            try {
+                let user = await UserModel.findOne({ email: profile.email });
 
-            if (!user) {
-                const randomPassword = randomBytes(8).toString('hex');
-                const hashedPassword = await hashPassword(randomPassword);
+                if (!user) {
+                    const randomPassword = randomBytes(8).toString('hex');
+                    const hashedPassword = await hashPassword(randomPassword);
 
-                user = new UserModel({
-                    googleId: profile.id,
-                    firstName: profile.family_name,
-                    lastName: profile.given_name,
-                    email: profile.emails[0].value,
-                    password: hashedPassword,
-                });
-                await user.save();
+                    user = new UserModel({
+                        googleId: profile.id,
+                        firstName: profile.family_name,
+                        lastName: profile.given_name,
+                        email: profile.emails[0].value,
+                        password: hashedPassword,
+                    });
+                    await user.save();
 
-                const role = new RoleModel({
-                    roleName: 'User',
-                    roleDescription: 'New role'
-                });
-                
-                await role.save();
+                    const role = await RoleModel.findOne({ roleName: "User" }, { _id: 1 });
+                    if (role) {
+                        const roleAndUser = new UserAndRoleModel({
+                            userId: user._id,
+                            roleId: role._id,
+                        });
+                        await roleAndUser.save();
+                    } else {
+                        const role = new RoleModel({
+                            roleName: 'User',
+                            roleDescription: 'New role'
+                        });
 
-                const roleAndUser = new UserAndRoleModel({
+                        await role.save();
+                    }
+                }
+
+                const roleAndUser = await UserAndRoleModel.findOne({ userId: user._id });
+                const roleName = await RoleModel.findById(roleAndUser?.roleId);
+
+                const payload: JwtPayload = {
                     userId: user._id,
-                    roleId: role._id,
-                });
+                    email: user.email,
+                    role: roleName?.roleName || 'User'
+                };
+                const token = jwt.sign(payload, process.env.SECRET_KEY as string, { expiresIn: '1h' });
 
-                await roleAndUser.save();
+                return done(null, { token });
+            } catch (error) {
+                return done(error, null);
             }
-
-            const roleAndUser = await UserAndRoleModel.findOne({ userId: user._id });
-            const roleName = await RoleModel.findById(roleAndUser?.roleId);
-
-            const payload: JwtPayload = { 
-                userId: user._id, 
-                email: user.email, 
-                role: roleName?.roleName || 'User' 
-            };
-            const token = jwt.sign(payload, process.env.SECRET_KEY as string, { expiresIn: '1h' });
-
-            return done(null, { token });
-        } catch (error) {
-            return done(error, null);
-        }
-    })
+        })
 );
 
 passport.serializeUser((user: any, done) => {

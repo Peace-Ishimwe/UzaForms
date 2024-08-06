@@ -4,11 +4,12 @@ import { Icon } from '@iconify/react';
 import { userAndRoleStore } from '@/store/userAndRoleStore';
 
 interface UserRoleData {
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
     role: string;
-    createdAt?: string;
+    status?: string;
     updatedAt?: string;
 }
 
@@ -36,19 +37,19 @@ const UserRoleTable: React.FC = () => {
                         <th className="py-3 px-6 text-left normal-case">Last Name</th>
                         <th className="py-3 px-6 text-left normal-case">Email</th>
                         <th className="py-3 px-6 text-left normal-case">Role</th>
-                        <th className="py-3 px-6 text-left normal-case">Created At</th>
+                        <th className="py-3 px-6 text-left normal-case">Status</th>
                         <th className="py-3 px-6 text-left normal-case">Updated At</th>
                         <th className="py-3 px-6 text-left normal-case">Actions</th>
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                    {usersAndRoles && usersAndRoles.map((userRole: UserRoleData, index: number) => (
+                    {usersAndRoles && usersAndRoles.data.map((userRole: UserRoleData, index: number) => (
                         <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                             <td className="py-3 px-6 text-left">{userRole.firstName}</td>
                             <td className="py-3 px-6 text-left">{userRole.lastName}</td>
                             <td className="py-3 px-6 text-left">{userRole.email}</td>
                             <td className="py-3 px-6 text-left">{userRole.role}</td>
-                            <td className="py-3 px-6 text-left">{userRole.createdAt}</td>
+                            <td className="py-3 px-6 text-left">{userRole.status}</td>
                             <td className="py-3 px-6 text-left">{userRole.updatedAt}</td>
                             <td className="py-3 px-6 text-left">
                                 <button

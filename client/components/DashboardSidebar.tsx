@@ -22,16 +22,25 @@ interface NavItem {
 const navItems: NavItem[] = [
     { name: 'Home', href: '/dashboard', icon: 'ic:baseline-dashboard' },
     {
-        name: 'Forms',
-        icon: 'simple-icons:googleforms',
+        name: 'Groups',
+        icon: 'uis:layer-group',
         subItems: [
-            { name: 'Projects', href: '/management/projects' },
-            { name: 'Teams', href: '/management/teams' },
+            { name: 'Groups Names', href: '/dashboard/group/names' },
+            { name: 'Group and Roles', href: '/dashboard/group/roles' },
+        ]
+    },
+    {
+        name: 'Forms',
+        icon: 'icon-park-solid:doc-add',
+        subItems: [
+            { name: 'Form Names', href: '/dashboard/form/names' },
+            { name: 'Form and Roles', href: '/dashboard/form/roles' },
+            { name: 'Form Design', href: '/dashboard/form/design' },
         ]
     },
     {
         name: 'Settings',
-        icon: 'ic:outline-settings',
+        icon: 'solar:settings-bold',
         subItems: [
             { name: 'Roles', href: '/dashboard/settings/roles' },
             { name: 'Users', href: '/dashboard/settings/users' },

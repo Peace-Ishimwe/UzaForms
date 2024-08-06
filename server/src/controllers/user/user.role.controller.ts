@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import UserAndRoleModel from "../models/user.role.model";
-import UserModel from "../models/user.model";
-import RoleModel from "../models/role.model";
+import UserAndRoleModel from "../../models/user/user.role.model";
+import UserModel from "../../models/user/user.model";
+import RoleModel from "../../models/role.model";
 
 export const createUserAndRole = async (req: Request, res: Response) => {
     try {
@@ -42,6 +42,7 @@ export const getAllUserAndRole = async (req: Request, res: Response) => {
             }
 
             return {
+                _id: ur._id,
                 userId: ur.userId,
                 roleId: ur.roleId,
                 firstName: user.firstName,
@@ -49,6 +50,7 @@ export const getAllUserAndRole = async (req: Request, res: Response) => {
                 email: user.email,
                 role: role.roleName,
                 createdAt: ur.createdAt,
+                status:  ur.status,
                 updatedAt: ur.updatedAt
             };
         }));
@@ -63,27 +65,15 @@ export const getAllUserAndRole = async (req: Request, res: Response) => {
 
 export const updateUserAndRole = async (req: Request, res: Response) => {
     try {
-        const { userId, roleId } = req.body;
+        const { userId, roleId, status } = req.body;
         const userAndRole = await UserAndRoleModel.findById(req.params.id);
 
         if (!userAndRole) {
             return res.status(404).json({ success: false, message: 'UserAndRole not found' });
         }
 
-        // Validate the presence of new user and role if provided
-        if (userId) {
-            const user = await UserModel.findById(userId);
-            if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-            userAndRole.userId = userId;
-        }
-
-        if (roleId) {
-            const role = await RoleModel.findById(roleId);
-            if (!role) return res.status(404).json({ success: false, message: 'Role not found' });
-            userAndRole.roleId = roleId;
-        }
-
         userAndRole.updatedAt = new Date();
+        userAndRole.status = status
         await userAndRole.save();
 
         return res.status(200).json({ success: true, message: 'UserAndRole updated successfully', userAndRole });

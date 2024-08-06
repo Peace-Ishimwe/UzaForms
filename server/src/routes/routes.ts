@@ -1,11 +1,19 @@
 import authRoutes from "./auth.routes";
 import otpRoutes from "./otp.routes";
-import userRoutes from "./user.routes";
-import userAndRoleRoutes from "./user.role.routes";
+import userRoutes from "./user/user.routes";
+import userAndRoleRoutes from "./user/user.role.routes";
+import groupNameRoutes from "./group/group.names.routes";
+import groupAndRoleRoutes from "./group/group.role.routes";
+import formNameRoutes from "./form/form.name.routes";
+import formAndRoleRoutes from "./form/form.role.routes";
 
 export {
   authRoutes,
   otpRoutes,
   userRoutes,
-  userAndRoleRoutes
+  userAndRoleRoutes,
+  groupNameRoutes,
+  groupAndRoleRoutes,
+  formNameRoutes,
+  formAndRoleRoutes
 };

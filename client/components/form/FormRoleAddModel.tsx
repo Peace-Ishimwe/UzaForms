@@ -1,16 +1,16 @@
 import React, { FormEvent, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { useCreateUserAndRole } from '@/hooks/useUserAndRole';
-import SearchUser from './SearchUser';
-import SearchRole from './SearchRole';
+import { useCreateFormAndRole } from '@/hooks/form/useFormAndRole';
+import SearchRole from '../Settings/SearchRole';
+import SearchForm from './SearchForm';
 import { toast } from 'react-toastify';
 
-const UserRoleAddModal: React.FC = () => {
-    const [userId, setUserId] = useState('')
+const FormRoleAddModal: React.FC = () => {
+    const [formNameId, setFormId] = useState('')
     const [roleId, setRoleId] = useState('')
-
-    const createRoleAndModalMutation = useCreateUserAndRole()
+    
+    const createRoleAndFormMutation = useCreateFormAndRole()
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const openAddModal = () => {
@@ -24,11 +24,11 @@ const UserRoleAddModal: React.FC = () => {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
-            const data = await createRoleAndModalMutation.mutateAsync({ userId, roleId })
+            const data = await createRoleAndFormMutation.mutateAsync({ formNameId, roleId })
             if (data.success == true) {
                 toast.success(data.message)
                 setIsAddModalOpen(false)
-            }else{
+            } else {
                 toast.error(data.message)
             }
         } catch (error) {
@@ -43,7 +43,7 @@ const UserRoleAddModal: React.FC = () => {
                 onClick={openAddModal}
                 className='text-white bg-primary px-4 py-2 rounded-lg'
             >
-                Add New User/Role
+                Add New Form/Role
             </button>
             <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
                 <DialogTrigger asChild>
@@ -53,12 +53,12 @@ const UserRoleAddModal: React.FC = () => {
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Add New User/Role</DialogTitle>
+                        <DialogTitle>Add New Form/Role</DialogTitle>
                     </DialogHeader>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Email</label>
-                            <SearchUser setUserId={setUserId} />
+                            <label className="block text-sm font-medium text-gray-700">Form</label>
+                            <SearchForm setFormId={setFormId} />
                         </div>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Role</label>
@@ -69,7 +69,7 @@ const UserRoleAddModal: React.FC = () => {
                             className="mt-3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:text-sm"
                         >
                             {
-                                createRoleAndModalMutation.isPending ? (
+                                createRoleAndFormMutation.isPending ? (
                                     <p>Creating...</p>
                                 ) : (
                                     <p>Add</p>
@@ -83,4 +83,4 @@ const UserRoleAddModal: React.FC = () => {
     );
 };
 
-export default UserRoleAddModal;
+export default FormRoleAddModal;

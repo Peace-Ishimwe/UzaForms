@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import UserModel from "../models/user.model";
+import UserModel from "../models/user/user.model";
 import hashPassword from "../utils/hash.password";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import OTPModel from "../models/otp.model";
@@ -8,7 +8,7 @@ import { userValidationSchema } from "../helpers/schema.validator";
 import { ValidationError } from "joi"
 import { extractPayload, verifyToken } from "../utils/jwt";
 import RoleModel from "../models/role.model";
-import UserAndRoleModel from "../models/user.role.model";
+import UserAndRoleModel from "../models/user/user.role.model";
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
