@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "dev": "nodemon --exec ts-node src/app.ts",
-    "start": "node dist/src/server.js"
+    "start": "node dist/app.js"
   },
   "keywords": [],
   "author": "Peace Ishimwe",
