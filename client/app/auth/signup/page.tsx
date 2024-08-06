@@ -56,6 +56,7 @@ const Signup = () => {
                 showToast('Registration failed. Please try again.');
             }
         }
+        
     };
 
     const googleAuth = () => {

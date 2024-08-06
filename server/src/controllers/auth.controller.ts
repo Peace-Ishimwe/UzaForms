@@ -80,6 +80,7 @@ export const validateEmail = async (req: Request, res: Response) => {
             return res.status(200).json({ success: true, message: 'Email verified' });
         } else {
             console.log('Invalid OTP');
+            
             return res.status(401).json({ message: 'Invalid OTP' });
         }
     } catch (error) {
