@@ -13,14 +13,14 @@ const GroupNamesPage = () => {
   const { setRoles } = roleStore()
   const { data, isPending } = useGetAllGroupNames();
   const { data: roleData, isPending: isRolePending } = useGetAllRoles();
-  
+
   useEffect(() => {
     if (data) {
       setgroupNames(data);
       setRoles(roleData)
     }
   }, [data]);
-  
+
   return (
     <div className="p-4 space-y-6">
       <ToastContainer />

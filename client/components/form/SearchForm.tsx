@@ -36,17 +36,17 @@ const SearchForm: React.FC<Props> = ({ setFormId }) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between w-full"
+          className="justify-between w-6/12 hover:bg-white"
         >
           {value
             ? formNames.data.find((form: any) => form._id === value)?.formName
-            : "Select form..."}
+            : "Select form name"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput placeholder="Search form..." />
+          <CommandInput placeholder="Search form name..." />
           <CommandList>
             <CommandEmpty>No form found.</CommandEmpty>
             <CommandGroup>
