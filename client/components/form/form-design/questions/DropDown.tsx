@@ -62,7 +62,6 @@ const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =>
   return (
     <div className='space-y-6'>
       <div className='py-2 border-b -mx-4'>
-        <label>{question.label}</label>
       </div>
       <div className='flex space-x-4 items-center'>
         <label className='whitespace-nowrap'>Label: </label>

@@ -21,7 +21,6 @@ const AddVideo: React.FC<Props> = ({ question, questionIndex, sectionIndex }) =>
     return (
         <div className='space-y-6'>
             <div className='py-2 border-b -mx-4'>
-                <label>{question.label}</label>
             </div>
             <div className='flex space-x-4  items-center'>
                 <p className='whitespace-nowrap'>Add Video IFrame: </p>

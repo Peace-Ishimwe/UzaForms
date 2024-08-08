@@ -35,7 +35,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ options, onSelect }) => {
                             <CommandItem
                                 key={option.value}
                                 onSelect={() => {
-                                    setValue(option.title);
+                                    setValue(option.value);
                                     onSelect(option.value);
                                     setOpen(false);
                                 }}

@@ -21,7 +21,6 @@ const AddUrl: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
   return (
     <div className="space-y-6">
       <div className="py-2 border-b -mx-4">
-        <label>{question.label}</label>
       </div>
       <div className="flex space-x-4 items-center">
         <p>URL: </p>
@@ -29,7 +28,8 @@ const AddUrl: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
           type='text'
           value={question.urlName || ''}
           onChange={handleChange}
-          className="border p-2 w-full font-bold text-lg"
+          className="border p-2 w-full"
+          placeholder='ex: https://orbit-23.vercel.app'
         />
       </div>
     </div>

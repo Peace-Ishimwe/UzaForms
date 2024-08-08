@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { EditFormNameModal } from './EditFormNameModal';
 import { Icon } from '@iconify/react';
 import { FormNamesStore } from '@/store/form/formNamesStore';
+import Link from 'next/link';
 
 interface FormName {
     id: string;
@@ -18,7 +19,7 @@ interface FormName {
 
 const FormNameTable: React.FC = () => {
     const { formNames } = FormNamesStore();
-    
+
     const [isAddDialogOpen, setAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
     const [selectedFormName, setSelectedFormName] = useState<FormName | null>(null);
@@ -47,19 +48,34 @@ const FormNameTable: React.FC = () => {
                 </thead>
                 <tbody className='text-gray-600 text-sm font-light'>
                     {formNames && formNames.data.map((fn: any) => (
-                        <tr key={fn.id}>
+                        <tr key={fn._id}>
                             <td className="py-3 px-6 text-left">{fn.formName}</td>
                             <td className="py-3 px-6 text-left">{fn.groupName}</td>
                             <td className="py-3 px-6 text-left">{fn.status}</td>
                             <td className="py-3 px-6 text-left">{fn.createdBy.firstName} {fn.createdBy.lastName}</td>
                             <td className="py-3 px-6 text-left">{fn.updatedAt}</td>
-                            <td className="py-3 px-6 text-left">
+                            <td className="py-3 px-6 text-left flex space-x-3">
                                 <button
                                     className="text-blue-600 hover:text-blue-800"
                                     onClick={() => handleEditOpen(fn)}
                                 >
                                     <Icon icon="ic:baseline-edit" fontSize={18} />
                                 </button>
+                                {
+                                    fn.formCreated ? (
+                                        <Link href={`/dashboard/form/update/${fn._id}`} className="text-blue-600 hover:text-blue-800">
+                                            <Icon icon="mdi:file-document-edit" fontSize={18} />
+                                        </Link>
+                                    ) : (
+                                        <Link href={`/dashboard/form/create/${fn._id}`} className="text-blue-600 hover:text-blue-800">
+                                            <Icon icon="gridicons:create" fontSize={18} />
+                                        </Link>
+                                    )
+                                }
+
+                                <Link href={'/'} className="text-blue-600 hover:text-blue-800">
+                                    <Icon icon="icon-park-solid:preview-open" fontSize={18} />
+                                </Link>
                             </td>
                         </tr>
                     ))}
@@ -67,9 +83,9 @@ const FormNameTable: React.FC = () => {
             </table>
 
             {selectedFormName && (
-                <EditFormNameModal 
-                    isOpen={isEditDialogOpen} 
-                    onClose={handleEditClose} 
+                <EditFormNameModal
+                    isOpen={isEditDialogOpen}
+                    onClose={handleEditClose}
                     formName={selectedFormName}
                     setSelectedFn={setSelectedFormName}
                 />

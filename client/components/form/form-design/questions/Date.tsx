@@ -22,7 +22,6 @@ const Date: React.FC<dropDownProps> = ({ question, sectionIndex, questionIndex }
     return (
         <div className='space-y-6'>
             <div className='py-2 border-b -mx-4'>
-                <label>{question.title}</label>
             </div>
             <div className='space-y-4'>
                 <div className='flex space-x-9 items-center w-full'>
@@ -49,10 +48,10 @@ const Date: React.FC<dropDownProps> = ({ question, sectionIndex, questionIndex }
                     </select>
                 </div>
                 <div className='flex space-x-3 items-center w-full'>
-                    <label>Type: </label>
+                    <label>Date Type: </label>
                     <select
-                        name="type"
-                        value={question.type || ''}
+                        name="dateType"
+                        value={question.dateType || ''}
                         onChange={handleChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     >

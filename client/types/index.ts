@@ -9,12 +9,11 @@ export interface SectionTypes {
     id: string;
     name: string;
     questions: QuestionTypes[];
-    nextSection?: string;
+    nextSectionId: string;
 }
 
 export interface QuestionTypes {
     id: string;
-    title?: string;
     type: string;
     label?: string;
     value?: string;
@@ -26,13 +25,16 @@ export interface QuestionTypes {
     document?: any;
     image?: any;
     maxCharacters?: number;
+    minCharacters?: number;
     decimalOptions?: string;
     numberOfDecimals?: number;
     attributes?: string;
-    attributeValue?: string;
+    attributeValue?: number;
     documentType?: string;
-    maxFileSize?: string;
-    file?: File;
+    maxFileSize?: number;
+    dateType?: string;
+    file?: any;
+    formData?: FormData;
     dropdownType?: string;
     options?: string[];
     nextSections?: { [key: number]: string };

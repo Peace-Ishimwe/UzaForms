@@ -22,7 +22,6 @@ const Paragraph: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =
   return (
     <div className='space-y-6'>
       <div className='py-2 border-b -mx-4'>
-        <label>{question.label}</label>
       </div>
       <div className='space-y-4'>
         <div className='flex space-x-9 items-center w-full'>
@@ -47,6 +46,17 @@ const Paragraph: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
+        </div>
+        <div className='flex space-x-9 items-center w-full'>
+          <label className='whitespace-nowrap'>Min Characters: </label>
+          <input
+            type="number"
+            name="minCharacters"
+            value={question.minCharacters || ''}
+            onChange={handleChange}
+            className="border p-2 w-full"
+            placeholder='Max Characters'
+          />
         </div>
         <div className='flex space-x-9 items-center w-full'>
           <label className='whitespace-nowrap'>Max Characters: </label>

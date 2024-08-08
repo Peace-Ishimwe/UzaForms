@@ -32,16 +32,16 @@ const Upload: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
   return (
     <div className='space-y-6'>
       <div className='py-2 border-b -mx-4'>
-        <label>{question.label}</label>
       </div>
       <div className='space-y-4'>
         <div className='space-y-2 flex space-x-3 items-center w-full'>
           <label>Label: </label>
           <input
-            type="file"
-            name="file"
+            type="text"
+            name="label"
             onChange={handleFileChange}
             className="border p-2 w-full"
+            placeholder='Upload label'
           />
         </div>
         <div className='flex space-x-3 items-center w-full'>
@@ -78,7 +78,7 @@ const Upload: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
         <div className='flex space-x-9 items-center w-full'>
           <label className='whitespace-nowrap'>Max File Size: </label>
           <input
-            type="text"
+            type="number"
             name="maxFileSize"
             value={question.maxFileSize || ''}
             onChange={handleChange}

@@ -1,0 +1,42 @@
+"use client"
+import FormWorkFlow from '@/components/form/form-design/FormWorkFlow'
+import FormUpdateWorkFlow from '@/components/form/form-design/FormWorkFlowUpdate'
+import { useGetAllFormNames } from '@/hooks/form/useFormNames'
+import { useFormStore } from '@/store/form-design/formStore'
+import { FormNamesStore } from '@/store/form/formNamesStore'
+import { useParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
+
+const FormDesignPage = () => {
+    const { setFormNames } = FormNamesStore()
+    const { setFormId } = useFormStore()
+    const { data } = useGetAllFormNames()
+    const params = useParams()
+    const formId = params?.formId
+    const [formName, setFormName] = useState("")
+
+    useEffect(() => {
+        if (data) {
+            setFormNames(data);
+        }
+    }, [data, setFormNames]);
+    
+    useEffect(() => {
+        if (formId && data) {
+            setFormId(formId as string);
+            const foundForm = data.data.find((form: any) => form._id === formId);
+            setFormName(foundForm?.formName || "Form");
+        }
+    }, [formId, data, setFormId]);
+
+    return (
+        <main className='p-4 space-y-6'>
+            <h1 className="text-2xl font-semibold">{formName} Design</h1>
+            <FormUpdateWorkFlow />
+            <ToastContainer />
+        </main>
+    )
+}
+
+export default FormDesignPage

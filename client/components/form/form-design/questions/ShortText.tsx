@@ -22,7 +22,6 @@ const ShortText: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =
   return (
     <div className='space-y-6'>
       <div className='py-2 border-b -mx-4'>
-        <label>{question.title}</label>
       </div>
       <div className='space-y-4'>
         <div className='flex space-x-9 items-center w-full'>

@@ -22,7 +22,6 @@ const Number: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
     return (
         <div className='space-y-6'>
             <div className='py-2 border-b -mx-4'>
-                <label>{question.label}</label>
             </div>
             <div className='space-y-4'>
                 <div className='flex space-x-9 items-center w-full'>
@@ -108,14 +107,14 @@ const Number: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
                     </select>
                 </div>
                 {
-                    question.decimalOptions == "with-decimals" && (
+                    question.attributes  && (
                         <div className='flex space-x-9 items-center w-full'>
                             <label className='whitespace-nowrap'>Attribute value: </label>
                             <div className='flex border w-full'>
                                 <input
                                     type="number"
                                     name="AttributeValue"
-                                    value={question.attributeValue || ''}
+                                    // value={''} 
                                     onChange={handleChange}
                                     className='w-full outline-none p-2'
                                     placeholder='Attribute value'

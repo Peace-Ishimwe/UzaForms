@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import SearchSection from './SearchSection';
 import AddItem from './AddItem';
 import { Icon } from '@iconify/react';
+import { toast } from 'react-toastify';
 
 interface SectionProps {
     SectionIndex: number;
@@ -14,13 +15,13 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections }) => {
-    const { updateSection, addSection, splitSection, removeSection, removeQuestionFromSection } = useFormStore();
+    const { updateSection, addSection, sections, removeSection, removeQuestionFromSection } = useFormStore();
 
     const handleAddDocumentFromQuestion = (type: string, questionIndex: number) => {
         if (type === 'Add Section') {
             handleAddSectionFromQuestion(questionIndex);
         } else {
-            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type, title: '' };
+            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type };
             const updatedQuestions = [...section.questions];
             updatedQuestions.splice(questionIndex + 1, 0, newQuestion);
             updateSection(SectionIndex, { ...section, questions: updatedQuestions });
@@ -28,9 +29,9 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
     };
 
     const handleAddSectionFromQuestion = (questionIndex: number) => {
-        const newSection: SectionTypes = { id: `section-${Date.now()}`, name: '', questions: section.questions.slice(questionIndex + 1) };
+        const newSection: SectionTypes = { id: `section-${Date.now()}`, name: '', questions: section.questions.slice(questionIndex + 1), nextSectionId: '' };
 
-        const updatedCurrentSection = { ...section, questions: section.questions.slice(0, questionIndex +  1) };
+        const updatedCurrentSection = { ...section, questions: section.questions.slice(0, questionIndex + 1) };
         updateSection(SectionIndex, updatedCurrentSection);
         addSection(newSection, SectionIndex + 1);
     };
@@ -39,7 +40,7 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
         if (type === 'Add Section') {
             handleAddSectionFromSection();
         } else {
-            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type, title: '' };
+            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type };
             const updatedQuestions = [...section.questions];
             updatedQuestions.splice(0, 0, newQuestion);
             updateSection(SectionIndex, { ...section, questions: updatedQuestions });
@@ -47,14 +48,14 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
     };
 
     const handleAddSectionFromSection = () => {
-        const newSection: SectionTypes = { id: `section-${Date.now()}`, name: '', questions: section.questions.slice(0) };
-        const updatedCurrentSection = { ...section, questions: section.questions.slice(0 +  section.questions.length) };
+        const newSection: SectionTypes = { id: `section-${Date.now()}`, name: '', questions: section.questions.slice(0), nextSectionId: '' };
+        const updatedCurrentSection = { ...section, questions: section.questions.slice(0 + section.questions.length) };
         updateSection(SectionIndex, updatedCurrentSection);
         addSection(newSection, SectionIndex + 1);
     };
 
     const handleSelectNextSection = (value: string) => {
-        updateSection(SectionIndex, { ...section, nextSection: value });
+        updateSection(SectionIndex, { ...section, nextSectionId: value });
     };
 
     const handleRemoveSection = () => {
@@ -86,19 +87,26 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
         { title: 'Add QR Code', value: 'Add QR Code' },
     ];
 
-    const sectionOptions = Array.from({ length: totalSections }, (_, i) => ({
-        title: `Section ${i + 1}`,
-        value: `section-${i + 1}`
-    }));
+    const sectionOptions = sections
+        .map((sec, i) => ({
+            title: `Section ${i + 1} (${sec.name || ''})`,
+            value: sec.id
+        }))
+        .filter((_, i) => i > SectionIndex);
+
 
     return (
         <div className="mb-4 rounded-lg">
             <div className='space-y-3 bg-white shadow-sm'>
                 <div className='p-4 border-b flex justify-between items-center bg-green-700 text-white'>
                     <h2 className="text-lg font-medium pl-[1px]">{`Section ${SectionIndex + 1} out of ${totalSections}`}</h2>
-                    <button onClick={handleRemoveSection} className="text-white text-2xl">
-                        <Icon icon="ic:outline-delete" />
-                    </button>
+                    {
+                        sections.length !== 1 && (
+                            <button type='button' onClick={handleRemoveSection} className="text-white text-2xl">
+                                <Icon icon="ic:outline-delete" />
+                            </button>
+                        )
+                    }
                 </div>
                 <div className='p-4 border-b'>
                     <div className='flex items-center space-x-4 mb-4'>
@@ -126,7 +134,7 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
                         <div className="w-full mb-4">
                             <div className="flex justify-between">
                                 <h3 className="font-semibold">{question.type}</h3>
-                                <button onClick={() => handleRemoveQuestion(i)} className="text-red-500 text-2xl">
+                                <button type='button' onClick={() => handleRemoveQuestion(i)} className="text-red-500 text-2xl">
                                     <Icon icon="ic:outline-delete" />
                                 </button>
                             </div>
@@ -136,7 +144,7 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
                     </div>
                 ))}
             </div>
-        </div> 
+        </div>
     );
 };
 

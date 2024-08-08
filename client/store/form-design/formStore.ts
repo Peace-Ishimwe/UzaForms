@@ -1,12 +1,13 @@
 import { SectionTypes, QuestionTypes } from '@/types';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware'
+import { persist } from 'zustand/middleware';
 
 interface FormState {
-  formName: string;
+  formId: string;
   sections: SectionTypes[];
-  setFormName: (name: string) => void;
-  initializeForm: () => void;
+  setFormId: (id: string) => void;
+  setSections: (sections: SectionTypes[]) => void; // New method
+  initializeForm: (initialData?: FormState) => void;
   addSection: (section: SectionTypes, position?: number) => void;
   updateSection: (index: number, section: SectionTypes) => void;
   addQuestionToSection: (sectionIndex: number, question: QuestionTypes) => void;
@@ -18,45 +19,58 @@ interface FormState {
 export const useFormStore = create(
   persist<FormState>(
     (set) => ({
-      formName: '',
+      formId: '',
       sections: [],
-      setFormName: (name) => set((state) => ({ ...state, formName: name })),
-      initializeForm: () => set((state) => ({ ...state, sections: [{ id: `section-${Date.now()}`, name: '', questions: [] }] })),
-      addSection: (section, position) => set((state) => {
-        const sections = [...state.sections];
-        if (position !== undefined) {
-          sections.splice(position, 0, section);
-        } else {
-          sections.push(section);
-        }
-        return { ...state, sections };
-      }),
-      updateSection: (index, section) => set((state) => {
-        const sections = [...state.sections];
-        sections[index] = section;
-        return { ...state, sections };
-      }),
-      addQuestionToSection: (sectionIndex, question) => set((state) => {
-        const sections = [...state.sections];
-        sections[sectionIndex].questions.push(question);
-        return { ...state, sections };
-      }),
-      removeSection: (index) => set((state) => {
-        const sections = state.sections.filter((_, i) => i !== index);
-        return { ...state, sections };
-      }),
-      removeQuestionFromSection: (sectionIndex, questionIndex) => set((state) => {
-        const sections = [...state.sections];
-        sections[sectionIndex].questions = sections[sectionIndex].questions.filter((_, i) => i !== questionIndex);
-        return { ...state, sections };
-      }),
-      splitSection: (sectionIndex, questionIndex, newSection) => set((state) => {
-        const sections = [...state.sections];
-        const currentSection = { ...sections[sectionIndex] };
-        newSection.questions = currentSection.questions.splice(questionIndex);
-        sections.splice(sectionIndex + 1, 0, newSection);
-        return { ...state, sections };
-      }),
+      setFormId: (id) => set((state) => ({ ...state, formId: id })),
+      setSections: (sections) => set((state) => ({ ...state, sections })), // Implementation of the setSections method
+      initializeForm: (initialData) =>
+        set((state) => ({
+          ...state,
+          sections: initialData
+            ? initialData.sections
+            : [{ id: `section-${Date.now()}`, name: '', questions: [], nextSectionId: '' }],
+        })),
+      addSection: (section, position) =>
+        set((state) => {
+          const sections = [...state.sections];
+          if (position !== undefined) {
+            sections.splice(position, 0, section);
+          } else {
+            sections.push(section);
+          }
+          return { ...state, sections };
+        }),
+      updateSection: (index, section) =>
+        set((state) => {
+          const sections = [...state.sections];
+          sections[index] = section;
+          return { ...state, sections };
+        }),
+      addQuestionToSection: (sectionIndex, question) =>
+        set((state) => {
+          const sections = [...state.sections];
+          sections[sectionIndex].questions.push(question);
+          return { ...state, sections };
+        }),
+      removeSection: (index) =>
+        set((state) => {
+          const sections = state.sections.filter((_, i) => i !== index);
+          return { ...state, sections };
+        }),
+      removeQuestionFromSection: (sectionIndex, questionIndex) =>
+        set((state) => {
+          const sections = [...state.sections];
+          sections[sectionIndex].questions = sections[sectionIndex].questions.filter((_, i) => i !== questionIndex);
+          return { ...state, sections };
+        }),
+      splitSection: (sectionIndex, questionIndex, newSection) =>
+        set((state) => {
+          const sections = [...state.sections];
+          const currentSection = { ...sections[sectionIndex] };
+          newSection.questions = currentSection.questions.splice(questionIndex);
+          sections.splice(sectionIndex + 1, 0, newSection);
+          return { ...state, sections };
+        }),
     }),
     {
       name: 'form-design-storage',
