@@ -3,6 +3,7 @@ import FormNameModel from "../../models/form/form.name.model";
 import FormAndRoleModel from "../../models/form/role.form.model";
 import UserModel from "../../models/user/user.model";
 import GroupNameModel from "../../models/group/group.names.model";
+import { FormDesignModel } from "../../models/form/form.design.model";
 
 // Create a new form Name
 export const createFormName = async (req: Request, res: Response) => {
@@ -50,6 +51,7 @@ export const getAllFormNames = async (req: Request, res: Response) => {
         const response = await Promise.all(formNames.map(async (form) => {
             const user = await UserModel.findById(form.createdBy);
             const group = await GroupNameModel.findById(form.groupNameId)
+            const formDesign = await FormDesignModel.findOne({ formId: form._id })
 
             if (!user) {
                 return {
@@ -58,6 +60,20 @@ export const getAllFormNames = async (req: Request, res: Response) => {
                     status: form.status,
                     groupName: group?.groupName,
                     createdBy: null,
+                    createdAt: form.createdAt,
+                    updatedAt: form.updatedAt
+                };
+            }
+            if(!formDesign){
+                return {
+                    _id: form._id,
+                    formName: form.formName,
+                    status: form.status,
+                    createdBy: {
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    },
+                    groupName: group?.groupName,
                     createdAt: form.createdAt,
                     updatedAt: form.updatedAt
                 };
@@ -72,6 +88,7 @@ export const getAllFormNames = async (req: Request, res: Response) => {
                     lastName: user.lastName
                 },
                 groupName: group?.groupName,
+                formCreated: true,
                 createdAt: form.createdAt,
                 updatedAt: form.updatedAt
             };

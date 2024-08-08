@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import connectDB from './config/database';
 
-import { authRoutes, formAndRoleRoutes, formNameRoutes, groupAndRoleRoutes, groupNameRoutes, otpRoutes, userAndRoleRoutes, userRoutes } from "./routes/routes"
+import { authRoutes, formAndRoleRoutes, formDesignRoutes, formNameRoutes, groupAndRoleRoutes, groupNameRoutes, otpRoutes, userAndRoleRoutes, userRoutes } from "./routes/routes"
 import { errorHandler, AppError } from './middlewares/error.middleware';
 
 dotenv.config();
@@ -42,6 +42,7 @@ app.use('/v1/api', groupNameRoutes)
 app.use('/v1/api', groupAndRoleRoutes)
 app.use('/v1/api', formNameRoutes)
 app.use('/v1/api', formAndRoleRoutes)
+app.use('/v1/api', formDesignRoutes)
 // Route not found handler
 app.use((req: Request, res: Response, next: NextFunction) => {
 	const error = new AppError('Not Found', 404);

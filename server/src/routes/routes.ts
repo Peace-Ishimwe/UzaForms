@@ -6,6 +6,7 @@ import groupNameRoutes from "./group/group.names.routes";
 import groupAndRoleRoutes from "./group/group.role.routes";
 import formNameRoutes from "./form/form.name.routes";
 import formAndRoleRoutes from "./form/form.role.routes";
+import formDesignRoutes from "./form/form.design.routes";
 
 export {
   authRoutes,
@@ -15,5 +16,6 @@ export {
   groupNameRoutes,
   groupAndRoleRoutes,
   formNameRoutes,
-  formAndRoleRoutes
+  formAndRoleRoutes,
+  formDesignRoutes
 };
