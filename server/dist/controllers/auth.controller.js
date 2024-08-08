@@ -61,7 +61,7 @@ exports.registerUser = registerUser;
 const validateEmail = async (req, res) => {
     try {
         const { email, OTP } = req.body;
-        const document = await otp_model_1.default.findOne({ email });
+        const document = await otp_model_1.default.findOne({ email }).sort({ createdAt: -1 });
         const user = await user_model_1.default.findOne({ email });
         if (!document) {
             return res.status(401).json({ message: 'Invalid OTP: Email not found' });

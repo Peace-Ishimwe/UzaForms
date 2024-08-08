@@ -30,14 +30,14 @@ export const registerUser = async (req: Request, res: Response) => {
 
         const hashedPassword = await hashPassword(password);
 
-        const newUser = new UserModel({ firstName, lastName, email, password: hashedPassword});
+        const newUser = new UserModel({ firstName, lastName, email, password: hashedPassword });
         await newUser.save();
         const newRole = new RoleModel({ roleName: 'Pending', roleDescription: 'New role' })
         await newRole.save()
         const newUserAndRole = new UserAndRoleModel({ userId: newUser._id, roleId: newRole._id })
         await newUserAndRole.save()
 
-        
+
         // Generate JWT token
         const token = jwt.sign(
             { userId: newUser.id, username: newUser.email, role: newRole.roleName },
@@ -66,21 +66,24 @@ export const registerUser = async (req: Request, res: Response) => {
 export const validateEmail = async (req: Request, res: Response) => {
     try {
         const { email, OTP } = req.body;
-        const document = await OTPModel.findOne({ email });
+        const document = await OTPModel.findOne({ email }).sort({ createdAt: -1 });
         const user = await UserModel.findOne({ email });
+
         if (!document) {
             return res.status(401).json({ message: 'Invalid OTP: Email not found' });
         }
-        if (document.otp === OTP) {            
+
+        if (document.otp === OTP) {
             if (!user) {
                 return res.status(401).json({ message: 'User not found' });
-            } 
-            const userAndRole =  await UserAndRoleModel.findOne({ userId: user._id })
-            await RoleModel.updateOne({ _id: userAndRole?.roleId }, { roleName: 'User' })
+            }
+
+            const userAndRole = await UserAndRoleModel.findOne({ userId: user._id });
+            await RoleModel.updateOne({ _id: userAndRole?.roleId }, { roleName: 'User' });
+
             return res.status(200).json({ success: true, message: 'Email verified' });
         } else {
             console.log('Invalid OTP');
-            
             return res.status(401).json({ message: 'Invalid OTP' });
         }
     } catch (error) {
@@ -234,7 +237,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 };
 
 export const validateToken = async (req: Request, res: Response) => {
-    try {        
+    try {
         const token = req.headers.authorization || req.cookies.token || <string>req.headers['authorization'];
 
         if (!token) {
@@ -247,7 +250,7 @@ export const validateToken = async (req: Request, res: Response) => {
         const userPayload = payload as JwtPayload;
         const user = await UserModel.findById(userPayload.userId)
 
-        return res.status(200).json({ success: true, message: "token is valid" , user})
+        return res.status(200).json({ success: true, message: "token is valid", user })
     } catch (error) {
         console.error('Error validating token:', error);
         return res.status(500).json({ success: false, message: 'Validation failed..' });
