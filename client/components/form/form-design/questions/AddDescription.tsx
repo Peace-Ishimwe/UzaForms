@@ -1,6 +1,6 @@
 import React from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-desgn/formStore';
+import { useFormStore } from '@/store/form-design/formStore';
 
 interface Props {
   question: QuestionTypes;

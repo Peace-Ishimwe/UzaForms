@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useFormStore } from '@/store/form-desgn/formStore';
+import { useFormStore } from '@/store/form-design/formStore';
 import Section from './Section';
 
 const FormWorkFlow: React.FC = () => {

@@ -5,7 +5,7 @@ import { Command, CommandInput, CommandItem, CommandList } from '@/components/ui
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 interface SearchSectionProps {
-    options: { label: string; value: string }[];
+    options: { title: string; value: string }[];
     onSelect: (value: string) => void;
 }
 
@@ -22,7 +22,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ options, onSelect }) => {
                     aria-expanded={open}
                     className="justify-between w-full"
                 >
-                    {value ? options.find((option) => option.value === value)?.label : "Select Section"}
+                    {value ? options.find((option) => option.value === value)?.title : "Select Section"}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
@@ -35,13 +35,13 @@ const SearchSection: React.FC<SearchSectionProps> = ({ options, onSelect }) => {
                             <CommandItem
                                 key={option.value}
                                 onSelect={() => {
-                                    setValue(option.label);
+                                    setValue(option.title);
                                     onSelect(option.value);
                                     setOpen(false);
                                 }}
                             >
-                                {option.label}
-                                {value === option.label && (
+                                {option.title}
+                                {value === option.title && (
                                     <Check className="ml-auto h-4 w-4" />
                                 )}
                             </CommandItem>

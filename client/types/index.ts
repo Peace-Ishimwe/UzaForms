@@ -14,15 +14,28 @@ export interface SectionTypes {
 
 export interface QuestionTypes {
     id: string;
+    title?: string;
     type: string;
     label?: string;
     value?: string;
     required?: string;
+    video?: any;
+    titleName?: string;
+    urlName?: string;
+    descriptionName?: string;
+    document?: any;
+    image?: any;
     maxCharacters?: number;
-    decimalType?: string;
+    decimalOptions?: string;
+    numberOfDecimals?: number;
     attributes?: string;
+    attributeValue?: string;
     documentType?: string;
     maxFileSize?: string;
     file?: File;
-  }
-  
+    dropdownType?: string;
+    options?: string[];
+    nextSections?: { [key: number]: string };
+    numberOfOptions?: number;
+    selectOptions?: string;
+}

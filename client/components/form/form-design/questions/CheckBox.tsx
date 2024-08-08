@@ -1,7 +1,6 @@
 import React from 'react';
 import { useFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
-import SearchSection from '../SearchSection';
 
 interface Props {
   question: QuestionTypes;
@@ -9,7 +8,7 @@ interface Props {
   sectionIndex: number;
 }
 
-const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
+const Checkbox: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
   const { sections, updateSection } = useFormStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -46,19 +45,6 @@ const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =>
     updateSection(sectionIndex, updatedSection);
   };
 
-  const handleSelectSection = (optionIndex: number, value: string) => {
-    const updatedNextSections = { ...(question.nextSections || {}), [optionIndex]: value };
-    const updatedQuestion = { ...question, nextSections: updatedNextSections };
-    const updatedSection = { ...sections[sectionIndex], questions: [...sections[sectionIndex].questions] };
-    updatedSection.questions[questionIndex] = updatedQuestion;
-    updateSection(sectionIndex, updatedSection);
-  };
-
-  const sectionOptions = sections.map((section, index) => ({
-    title: `Section ${index + 1}: ${section.name}`,
-    value: `Section-${index + 1}-${section.name}`
-  }));
-
   return (
     <div className='space-y-6'>
       <div className='py-2 border-b -mx-4'>
@@ -89,19 +75,29 @@ const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =>
         </select>
       </div>
       <div className='flex space-x-4 items-center'>
-        <label className='whitespace-nowrap'>Dropdown Type: </label>
+        <label className='whitespace-nowrap'>Select Options: </label>
         <select
-          name="dropdownType"
-          value={question.dropdownType || 'simple'}
+          name="selectOptions"
+          value={question.selectOptions || 'select-at-least'}
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         >
-          <option value="simple">Simple</option>
-          <option value="with-next-section">With Next Section</option>
-          <option value="from-database">From Database</option>
+          <option value="select-at-least">Select at least</option>
+          <option value="select-at-most">Select at most</option>
+          <option value="select-exactly">Select exactly</option>
         </select>
       </div>
-
+      <div className='flex space-x-4 items-center'>
+        <label className='whitespace-nowrap'>Number of Options: </label>
+        <input
+          type="number"
+          name="numberOfOptions"
+          value={question.numberOfOptions || ''}
+          onChange={handleChange}
+          className="border p-2 w-full"
+          placeholder='Number here'
+        />
+      </div>
       <div className='space-y-4'>
         {question.options && question.options.map((option, index) => (
           <div key={index} className='flex space-x-4 items-center'>
@@ -112,12 +108,6 @@ const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =>
               className="border p-2 w-full"
               placeholder={`Option ${index + 1}`}
             />
-            {question.dropdownType === 'with-next-section' && (
-              <SearchSection
-                options={sectionOptions}
-                onSelect={(value) => handleSelectSection(index, value)}
-              />
-            )}
             <button type="button" onClick={() => removeOption(index)} className="text-red-500">X</button>
           </div>
         ))}
@@ -127,4 +117,4 @@ const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =>
   );
 };
 
-export default DropDown;
+export default Checkbox;

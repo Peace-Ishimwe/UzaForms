@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-desgn/formStore';
+import { useFormStore } from '@/store/form-design/formStore';
 
 interface Props {
     question: QuestionTypes;
@@ -19,7 +19,7 @@ const AddImage: React.FC<Props> = ({ question, questionIndex, sectionIndex }) =>
 
             const reader = new FileReader();
             reader.onloadend = () => {
-                const updatedQuestion = { ...question, AddImage: reader.result };
+                const updatedQuestion = { ...question, image: reader.result };
                 const updatedSection = { ...sections[sectionIndex], questions: [...sections[sectionIndex].questions] };
                 updatedSection.questions[questionIndex] = updatedQuestion;
                 updateSection(sectionIndex, updatedSection);
@@ -38,7 +38,7 @@ const AddImage: React.FC<Props> = ({ question, questionIndex, sectionIndex }) =>
                 <input
                     type="file"
                     accept="image/*"
-                    value={question.addImage}
+                    value={question.image}
                     className="border p-2 w-full"
                     onChange={handleChange}
                 />

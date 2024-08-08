@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormStore } from '@/store/form-desgn/formStore';
+import { useFormStore } from '@/store/form-design/formStore';
 import Question from './Question';
 import { QuestionTypes, SectionTypes } from '@/types';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,7 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
         if (type === 'Add Section') {
             handleAddSectionFromQuestion(questionIndex);
         } else {
-            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type, label: '' };
+            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type, title: '' };
             const updatedQuestions = [...section.questions];
             updatedQuestions.splice(questionIndex + 1, 0, newQuestion);
             updateSection(SectionIndex, { ...section, questions: updatedQuestions });
@@ -39,7 +39,7 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
         if (type === 'Add Section') {
             handleAddSectionFromSection();
         } else {
-            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type, label: '' };
+            const newQuestion: QuestionTypes = { id: `question-${Date.now()}`, type, title: '' };
             const updatedQuestions = [...section.questions];
             updatedQuestions.splice(0, 0, newQuestion);
             updateSection(SectionIndex, { ...section, questions: updatedQuestions });
@@ -66,28 +66,28 @@ const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections 
     };
 
     const questionOptions = [
-        { label: 'Add Section', value: 'Add Section' },
-        { label: 'Add Title', value: 'Add Title' },
-        { label: 'Add Description', value: 'Add Description' },
-        { label: 'Add URL', value: 'Add URL' },
-        { label: 'Add Document', value: 'Add Document' },
-        { label: 'Add Image', value: 'Add Image' },
-        { label: 'Add Video', value: 'Add Video' },
-        { label: 'Short Text', value: 'Short Text' },
-        { label: 'Paragraph', value: 'Paragraph' },
-        { label: 'Number', value: 'Number' },
-        { label: 'Checkbox', value: 'Checkbox' },
-        { label: 'Dropdown', value: 'Dropdown' },
-        { label: 'Upload', value: 'Upload' },
-        { label: 'Date', value: 'Date' },
-        { label: 'Signature', value: 'Signature' },
-        { label: 'Add Calculation', value: 'Add Calculation' },
-        { label: 'Add To Database', value: 'Add To Database' },
-        { label: 'Add QR Code', value: 'Add QR Code' },
+        { title: 'Add Section', value: 'Add Section' },
+        { title: 'Add Title', value: 'Add Title' },
+        { title: 'Add Description', value: 'Add Description' },
+        { title: 'Add URL', value: 'Add URL' },
+        { title: 'Add Document', value: 'Add Document' },
+        { title: 'Add Image', value: 'Add Image' },
+        { title: 'Add Video', value: 'Add Video' },
+        { title: 'Short Text', value: 'Short Text' },
+        { title: 'Paragraph', value: 'Paragraph' },
+        { title: 'Number', value: 'Number' },
+        { title: 'Checkbox', value: 'Checkbox' },
+        { title: 'Dropdown', value: 'Dropdown' },
+        { title: 'Upload', value: 'Upload' },
+        { title: 'Date', value: 'Date' },
+        { title: 'Signature', value: 'Signature' },
+        { title: 'Add Calculation', value: 'Add Calculation' },
+        { title: 'Add To Database', value: 'Add To Database' },
+        { title: 'Add QR Code', value: 'Add QR Code' },
     ];
 
     const sectionOptions = Array.from({ length: totalSections }, (_, i) => ({
-        label: `Section ${i + 1}`,
+        title: `Section ${i + 1}`,
         value: `section-${i + 1}`
     }));
 

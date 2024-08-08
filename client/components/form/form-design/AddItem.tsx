@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/popover"
 
 interface ComboBoxProps {
-    options: { label: string, value: string }[];
+    options: { title: string, value: string }[];
     onSelect: (value: string) => void;
 }
 
@@ -36,7 +36,7 @@ const AddItem: React.FC<ComboBoxProps> = ({ options, onSelect }) => {
                     aria-expanded={open}
                     className="justify-between bg-primary text-white hover:text-white p-2 rounded hover:bg-primary"
                 >
-                    {value ? options.find((option) => option.value === value)?.label : "Add Item"}
+                    {value ? options.find((option) => option.value === value)?.title : "Add Item"}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
@@ -63,7 +63,7 @@ const AddItem: React.FC<ComboBoxProps> = ({ options, onSelect }) => {
                                             value === option.value ? "opacity-100" : "opacity-0"
                                         )}
                                     />
-                                    {option.label}
+                                    {option.title}
                                 </CommandItem>
                             ))}
                         </CommandGroup>

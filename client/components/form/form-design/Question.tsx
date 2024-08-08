@@ -11,6 +11,8 @@ import AddUrl from './questions/AddUrl';
 import AddDocument from './questions/AddDocument';
 import AddImage from './questions/AddImage';
 import AddVideo from './questions/AddVideo';
+import Checkbox from './questions/CheckBox';
+import Date from './questions/Date';
 
 interface QuestionProps {
     questionIndex: number;
@@ -62,16 +64,9 @@ const Question: React.FC<QuestionProps> = ({ questionIndex, question, sectionInd
                 return (
                     <Number question={question} sectionIndex={sectionIndex} questionIndex={questionIndex} key={question.id} />
                 );
-            case 'Add Checkbox':
+            case 'Checkbox':
                 return (
-                    <div className='space-y-2'>
-                        <label>{question.label}</label>
-                        <input
-                            type="checkbox"
-                            checked={!!question.label}
-                            className="border p-2"
-                        />
-                    </div>
+                    <Checkbox question={question} sectionIndex={sectionIndex} questionIndex={questionIndex} key={question.id} />
                 );
             case 'Upload':
                 return (
@@ -79,15 +74,7 @@ const Question: React.FC<QuestionProps> = ({ questionIndex, question, sectionInd
                 );
             case 'Date':
                 return (
-                    <div className='space-y-2'>
-                        <label>{question.label}</label>
-                        <input
-                            type="date"
-                            value={question.label || ''}
-                            className="border p-2 w-full"
-                        />
-
-                    </div>
+                    <Date question={question} sectionIndex={sectionIndex} questionIndex={questionIndex} />
                 );
             default:
                 return null;

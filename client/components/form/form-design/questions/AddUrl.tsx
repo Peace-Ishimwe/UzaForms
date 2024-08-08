@@ -1,6 +1,6 @@
 import React from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-desgn/formStore';
+import { useFormStore } from '@/store/form-design/formStore';
 
 interface Props {
   question: QuestionTypes;
@@ -11,7 +11,7 @@ interface Props {
 const AddUrl: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
   const { sections, updateSection } = useFormStore();
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedQuestion = { ...question, urlName: e.target.value };
     const updatedSection = { ...sections[sectionIndex], questions: [...sections[sectionIndex].questions] };
     updatedSection.questions[questionIndex] = updatedQuestion;
@@ -25,7 +25,8 @@ const AddUrl: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
       </div>
       <div className="flex space-x-4 items-center">
         <p>URL: </p>
-        <textarea
+        <input
+          type='text'
           value={question.urlName || ''}
           onChange={handleChange}
           className="border p-2 w-full font-bold text-lg"

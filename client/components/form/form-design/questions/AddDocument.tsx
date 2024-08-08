@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-desgn/formStore';
+import { useFormStore } from '@/store/form-design/formStore';
 
 interface Props {
     question: QuestionTypes;
@@ -19,7 +19,7 @@ const AddDocument: React.FC<Props> = ({ question, questionIndex, sectionIndex })
 
             const reader = new FileReader();
             reader.onloadend = () => {
-                const updatedQuestion = { ...question, addDocument: reader.result };
+                const updatedQuestion = { ...question, document: reader.result };
                 const updatedSection = { ...sections[sectionIndex], questions: [...sections[sectionIndex].questions] };
                 updatedSection.questions[questionIndex] = updatedQuestion;
                 updateSection(sectionIndex, updatedSection);
@@ -34,11 +34,10 @@ const AddDocument: React.FC<Props> = ({ question, questionIndex, sectionIndex })
                 <label>{question.label}</label>
             </div>
             <div className="flex space-x-4 items-center">
-                <p className='whitespace-nowrap'>Add document: </p>
+                <p className="whitespace-nowrap">Add document: </p>
                 <input
                     type="file"
                     accept=".pdf,.doc,.docx"
-                    value={question.addDocument}
                     className="border p-2 w-full"
                     onChange={handleChange}
                 />
