@@ -1,6 +1,7 @@
 import React from 'react'
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
+import { useParams } from 'next/navigation';
 
 interface dropDownProps {
     question: QuestionTypes,
@@ -9,7 +10,9 @@ interface dropDownProps {
 }
 
 const Date: React.FC<dropDownProps> = ({ question, sectionIndex, questionIndex }) => {
-    const { sections, updateSection } = useFormStore();
+    const params = useParams()
+    const formId = params?.formId as string
+    const { sections, updateSection } = createFormStore(formId)();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -48,7 +51,7 @@ const Date: React.FC<dropDownProps> = ({ question, sectionIndex, questionIndex }
                     </select>
                 </div>
                 <div className='flex space-x-3 items-center w-full'>
-                    <label>Date Type: </label>
+                    <label className='whitespace-nowrap'>Date Type: </label>
                     <select
                         name="dateType"
                         value={question.dateType || ''}

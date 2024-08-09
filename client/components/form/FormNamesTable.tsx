@@ -72,10 +72,13 @@ const FormNameTable: React.FC = () => {
                                         </Link>
                                     )
                                 }
-
-                                <Link href={'/'} className="text-blue-600 hover:text-blue-800">
-                                    <Icon icon="icon-park-solid:preview-open" fontSize={18} />
-                                </Link>
+                                {
+                                    fn.formCreated && (
+                                        <Link href={`/dashboard/form/preview/${fn._id}`} className="text-blue-600 hover:text-blue-800">
+                                            <Icon icon="icon-park-solid:preview-open" fontSize={18} />
+                                        </Link>
+                                    )
+                                }
                             </td>
                         </tr>
                     ))}

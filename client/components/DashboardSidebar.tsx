@@ -35,7 +35,6 @@ const navItems: NavItem[] = [
         subItems: [
             { name: 'Form Names', href: '/dashboard/form/names' },
             { name: 'Form and Roles', href: '/dashboard/form/roles' },
-            { name: 'Form Design', href: '/dashboard/form/design' },
         ]
     },
     {

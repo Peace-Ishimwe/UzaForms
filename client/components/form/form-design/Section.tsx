@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import Question from './Question';
 import { QuestionTypes, SectionTypes } from '@/types';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,7 @@ import SearchSection from './SearchSection';
 import AddItem from './AddItem';
 import { Icon } from '@iconify/react';
 import { toast } from 'react-toastify';
+import { useParams } from 'next/navigation';
 
 interface SectionProps {
     SectionIndex: number;
@@ -15,7 +16,9 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ SectionIndex, section, totalSections }) => {
-    const { updateSection, addSection, sections, removeSection, removeQuestionFromSection } = useFormStore();
+    const params = useParams()
+    const formId = params?.formId as string
+    const { sections, updateSection, addSection, removeSection, removeQuestionFromSection } = createFormStore(formId)();
 
     const handleAddDocumentFromQuestion = (type: string, questionIndex: number) => {
         if (type === 'Add Section') {

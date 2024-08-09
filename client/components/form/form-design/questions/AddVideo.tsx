@@ -1,6 +1,7 @@
 import React from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
+import { useParams } from 'next/navigation';
 
 interface Props {
     question: QuestionTypes;
@@ -9,9 +10,11 @@ interface Props {
 }
 
 const AddVideo: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
-    const { sections, updateSection } = useFormStore();
+    const params = useParams()
+    const formId = params?.formId as string
+    const { sections, updateSection } = createFormStore(formId)();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const updatedQuestion = { ...question, video: e.target.value };
         const updatedSection = { ...sections[sectionIndex], questions: [...sections[sectionIndex].questions] };
         updatedSection.questions[questionIndex] = updatedQuestion;
@@ -24,8 +27,7 @@ const AddVideo: React.FC<Props> = ({ question, questionIndex, sectionIndex }) =>
             </div>
             <div className='flex space-x-4  items-center'>
                 <p className='whitespace-nowrap'>Add Video IFrame: </p>
-                <input
-                    type="text"
+                <textarea
                     value={question.video}
                     className="border p-2 w-full"
                     placeholder='Video IFrame'

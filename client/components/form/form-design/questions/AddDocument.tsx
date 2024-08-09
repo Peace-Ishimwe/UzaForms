@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { toast } from 'react-toastify';
+import { useParams } from 'next/navigation';
 
 interface Props {
     question: QuestionTypes;
@@ -10,7 +11,9 @@ interface Props {
 }
 
 const AddDocument: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
-    const { sections, updateSection } = useFormStore();
+    const params = useParams()
+    const formId = params?.formId as string
+    const { sections, updateSection } = createFormStore(formId)();
     const [isUploading, setIsUploading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -97,14 +100,14 @@ const AddDocument: React.FC<Props> = ({ question, questionIndex, sectionIndex })
                 />
                 {(isUploading || isDeleting) && <p>Loading...</p>}
                 {question.document && (
-                <button
-                    onClick={handleDeleteClick}
-                    className="bg-red-500 text-white p-2 rounded"
-                    disabled={isDeleting}
-                >
-                    {isDeleting ? 'Deleting...' : 'Delete'}
-                </button>
-            )}
+                    <button
+                        onClick={handleDeleteClick}
+                        className="bg-red-500 text-white p-2 rounded"
+                        disabled={isDeleting}
+                    >
+                        {isDeleting ? 'Deleting...' : 'Delete'}
+                    </button>
+                )}
             </div>
         </div>
     );

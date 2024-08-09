@@ -1,12 +1,14 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useFormStore } from '@/store/form-design/formStore';
+import React, { FormEvent } from 'react';
+import { createFormStore } from '@/store/form-design/formStore';
 import Section from './Section';
 import { toast } from 'react-toastify';
 import { useCreateFormDesign } from '@/hooks/form/useFormDesign';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 const FormWorkFlow: React.FC = () => {
-  const { sections, formId, initializeForm } = useFormStore();
+  const params = useParams()
+  const formId = params?.formId as string
+  const { sections, updateSection, initializeForm } = createFormStore(formId)();
   const createFormDesignMutation = useCreateFormDesign();
   const router = useRouter()
 

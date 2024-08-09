@@ -1,6 +1,7 @@
 import React from 'react';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
+import { useParams } from 'next/navigation';
 
 interface Props {
   question: QuestionTypes;
@@ -9,8 +10,9 @@ interface Props {
 }
 
 const Upload: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
-  const { sections, updateSection } = useFormStore();
-
+  const params = useParams()
+  const formId = params?.formId as string
+  const { sections, updateSection } = createFormStore(formId)();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     const updatedQuestion = { ...question, [name]: value };
@@ -39,9 +41,10 @@ const Upload: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
           <input
             type="text"
             name="label"
-            onChange={handleFileChange}
+            value={question.label || ''}
+            onChange={handleChange}
             className="border p-2 w-full"
-            placeholder='Upload label'
+            placeholder='upload label'
           />
         </div>
         <div className='flex space-x-3 items-center w-full'>

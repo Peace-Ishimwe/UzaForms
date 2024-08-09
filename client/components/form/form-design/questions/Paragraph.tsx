@@ -1,6 +1,7 @@
 import React from 'react';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
+import { useParams } from 'next/navigation';
 
 interface Props {
   question: QuestionTypes;
@@ -9,7 +10,9 @@ interface Props {
 }
 
 const Paragraph: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
-  const { sections, updateSection } = useFormStore();
+  const params = useParams()
+  const formId = params?.formId as string
+  const { sections, updateSection } = createFormStore(formId)();
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,7 +29,7 @@ const Paragraph: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =
       <div className='space-y-4'>
         <div className='flex space-x-9 items-center w-full'>
           <label>Label: </label>
-          <textarea
+          <input
             name="label"
             value={question.label || ''}
             onChange={handleChange}

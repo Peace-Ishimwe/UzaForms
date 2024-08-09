@@ -1,6 +1,7 @@
 import React from 'react';
 import { QuestionTypes } from '@/types';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
+import { useParams } from 'next/navigation';
 
 interface Props {
   question: QuestionTypes;
@@ -9,7 +10,9 @@ interface Props {
 }
 
 const AddTitle: React.FC<Props> = ({ question, questionIndex, sectionIndex }) => {
-  const { sections, updateSection } = useFormStore();
+  const params = useParams()
+  const formId = params?.formId as string
+  const { sections, updateSection } = createFormStore(formId)();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedQuestion = { ...question, titleName: e.target.value };

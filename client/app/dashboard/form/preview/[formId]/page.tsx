@@ -1,6 +1,5 @@
 "use client"
-import FormUpdateWorkFlow from '@/components/form/form-design/FormWorkFlowUpdate'
-import { useGetFormDesignById } from '@/hooks/form/useFormDesign'
+import FormPreview from '@/components/form/form-design/FormPreview'
 import { useGetAllFormNames } from '@/hooks/form/useFormNames'
 import { createFormStore } from '@/store/form-design/formStore'
 import { FormNamesStore } from '@/store/form/formNamesStore'
@@ -12,30 +11,27 @@ const FormDesignPage = () => {
     const params = useParams()
     const formId = params?.formId as string
     const { setFormNames } = FormNamesStore()
-    const { setSections } = createFormStore(formId)()
+    const { data } = useGetAllFormNames()
     const [formName, setFormName] = useState("")
-    const { data: formNameData } = useGetAllFormNames()
-    const { data, isLoading } = useGetFormDesignById(formId)
-    
-    useEffect(() => {
-        if (formNameData) {
-            setFormNames(formNameData);
-        }
-    }, [formNameData, setFormNames]);
 
     useEffect(() => {
-        if (formNameData && data) {
-            setSections(data.sections)
-            const foundForm = formNameData.data.find((form: any) => form._id === formId);
+        if (data) {
+            setFormNames(data);
+        }
+    }, [data, setFormNames]);
+    
+    useEffect(() => {
+        if (formId && data) {
+            const foundForm = data.data.find((form: any) => form._id === formId);
             setFormName(foundForm?.formName || "Form");
         }
-    }, [formNameData, data]);
+    }, [formId, data ]);
 
     return (
         <main className='p-4 space-y-6'>
             <h1 className="text-2xl font-semibold">{formName} Design</h1>
-            <FormUpdateWorkFlow />  
-            <ToastContainer />   
+            <FormPreview />
+            <ToastContainer />
         </main>
     )
 }

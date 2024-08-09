@@ -1,25 +1,17 @@
-import React, { useEffect, useState, FormEvent } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { useFormStore } from '@/store/form-design/formStore';
+import React, { FormEvent } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { createFormStore } from '@/store/form-design/formStore';
 import Section from './Section';
 import { toast } from 'react-toastify';
-import { useGetFormDesignById, useUpdateFormDesign } from '@/hooks/form/useFormDesign';
+import { useUpdateFormDesign } from '@/hooks/form/useFormDesign';
 import { ToastContainer } from 'react-toastify';
 
 const FormUpdateWorkFlow: React.FC = () => {
-    const { sections, formId, initializeForm, setSections, setFormId } = useFormStore();
+    const params = useParams()
+    const formId = params?.formId as string
+    const { sections, updateSection, initializeForm } = createFormStore(formId)();
     const updateFormDesignMutation = useUpdateFormDesign();
     const router = useRouter();
-
-    const { data, isLoading } = useGetFormDesignById(formId);
-
-    useEffect(() => {
-        if (data) {
-            const { formId, sections} = data;
-            setFormId(formId);
-            setSections(sections);
-        }
-    }, [data, setFormId, setSections]);
 
     const validateForm = (): boolean => {
         let isValid = true;
@@ -43,10 +35,10 @@ const FormUpdateWorkFlow: React.FC = () => {
         if (!validateForm()) return;
 
         try {
-            const updatePayload = { _id: formId as string, formDesignData: { formId, sections } };
+            const updatePayload = { formId: formId as string, formDesignData: { formId, sections } };
             const response = await updateFormDesignMutation.mutateAsync(updatePayload);
-            if (response.success) {
-                toast.success('Form updated successfully!');
+            if (response.success == true) {
+                toast.success(response.message);
                 initializeForm();
                 router.push('/dashboard/form/names');
             } else {
@@ -57,10 +49,6 @@ const FormUpdateWorkFlow: React.FC = () => {
             toast.error('Saving form failed!');
         }
     };
-
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
 
     return (
         <form onSubmit={handleSubmit} className="w-full">

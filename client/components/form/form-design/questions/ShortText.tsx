@@ -1,5 +1,6 @@
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 interface Props {
@@ -9,7 +10,9 @@ interface Props {
 }
 
 const ShortText: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
-  const { sections, updateSection } = useFormStore();
+  const params = useParams()
+  const formId = params?.formId as string
+  const { sections, updateSection } = createFormStore(formId)();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

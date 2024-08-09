@@ -1,6 +1,7 @@
 import React from 'react';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
+import { useParams } from 'next/navigation';
 
 interface Props {
     question: QuestionTypes;
@@ -9,7 +10,9 @@ interface Props {
 }
 
 const Number: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
-    const { sections, updateSection } = useFormStore();
+    const params = useParams()
+    const formId = params?.formId as string
+    const { sections, updateSection } = createFormStore(formId)();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -107,7 +110,7 @@ const Number: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
                     </select>
                 </div>
                 {
-                    question.attributes  && (
+                    question.attributes && (
                         <div className='flex space-x-9 items-center w-full'>
                             <label className='whitespace-nowrap'>Attribute value: </label>
                             <div className='flex border w-full'>

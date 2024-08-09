@@ -1,7 +1,8 @@
 import React from 'react';
-import { useFormStore } from '@/store/form-design/formStore';
+import { createFormStore } from '@/store/form-design/formStore';
 import { QuestionTypes } from '@/types';
 import SearchSection from '../SearchSection';
+import { useParams } from 'next/navigation';
 
 interface Props {
   question: QuestionTypes;
@@ -10,7 +11,9 @@ interface Props {
 }
 
 const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) => {
-  const { sections, updateSection } = useFormStore();
+  const params = useParams()
+  const formId = params?.formId as string
+  const { sections, updateSection } = createFormStore(formId)();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -56,7 +59,7 @@ const DropDown: React.FC<Props> = ({ question, sectionIndex, questionIndex }) =>
 
   const sectionOptions = sections.map((section, index) => ({
     title: `Section ${index + 1}: ${section.name}`,
-    value: `Section-${index + 1}-${section.name}`
+    value: section.id
   }));
 
   return (
